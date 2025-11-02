@@ -1,11 +1,5 @@
-# Stage 1: Build
-FROM openjdk:17 AS build
+FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
-COPY src /app/src
-RUN javac src/Main.java -d /app/out
-
-# Stage 2: Runtime
-FROM openjdk:17
-WORKDIR /app
-COPY --from=build /app/out /app
-CMD ["java", "Main"]
+COPY App.java .
+RUN javac App.java
+CMD ["java", "App"]
