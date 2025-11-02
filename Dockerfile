@@ -1,14 +1,11 @@
-# Use OpenJDK 17
-FROM openjdk:17-alpine
-
-# Set working directory
+# Stage 1: Build
+FROM openjdk:17 AS build
 WORKDIR /app
+COPY src /app/src
+RUN javac src/Main.java -d /app/out
 
-# Copy Java source file
-COPY Main.java .
-
-# Compile the Java program
-RUN javac Main.java
-
-# Run the Java program
+# Stage 2: Runtime
+FROM openjdk:17
+WORKDIR /app
+COPY --from=build /app/out /app
 CMD ["java", "Main"]
